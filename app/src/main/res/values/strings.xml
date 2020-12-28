@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DataListApp</string>
+    <string name="loading">Loading..</string>
+    <string name="nodata">No data to display..</string>
+</resources>

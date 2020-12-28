@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="myData"
+            type="devx.app.datalistapp.model.home.MyData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/dataImage"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            bind:image="@{myData.dataImage}"
+            tools:src="@color/placeholder_grey_light" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dataTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:singleLine="true"
+            android:text="@{myData.dataTitle}"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dataImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Some title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dataText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@{myData.dataText}"
+            android:textColor="#686868"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dataImage"
+            app:layout_constraintTop_toBottomOf="@+id/dataTitle"
+            tools:text="Some text \ntext text \ntext" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
