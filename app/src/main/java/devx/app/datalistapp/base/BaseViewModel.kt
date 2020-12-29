@@ -1,4 +1,5 @@
 package devx.app.datalistapp.base
+
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +14,7 @@ import kotlin.coroutines.coroutineContext
 
 abstract class BaseViewModel : ViewModel() {
 
-    open fun launchViewModelScope(doWork: suspend () -> Unit) : Job {
+    open fun launchViewModelScope(doWork: suspend () -> Unit): Job {
         return viewModelScope.launch(viewModelScope.coroutineContext + Dispatchers.IO) {
             doWork()
         }
@@ -27,9 +28,9 @@ abstract class BaseViewModel : ViewModel() {
     open fun showNoData() = isNoData.postValue(View.VISIBLE)
     open fun hideNoData() = isNoData.postValue(View.GONE)
 
-    open val isRefreshing = MutableLiveData(View.GONE)
-    open fun showRefreshing() = isRefreshing.postValue(View.VISIBLE)
-    open fun stopRefreshing() = isRefreshing.postValue(View.GONE)
+    open val showRetry = MutableLiveData(View.GONE)
+    open fun showRetryBtn() = showRetry.postValue(View.VISIBLE)
+    open fun hideRetryBtn() = showRetry.postValue(View.GONE)
 
     open fun onError(t: Throwable) {
         viewModelScope.launch {
@@ -39,7 +40,8 @@ abstract class BaseViewModel : ViewModel() {
                 is HttpException -> showShort("Unable to connect to server")
                 is UnknownHostException -> {
                     showShort("Unable to connect to server. Please check your internet connection.")
-                }else -> {
+                }
+                else -> {
                     showShort("Something went wrong")
                     Log.e("ERROR", "${t.message}")
                 }

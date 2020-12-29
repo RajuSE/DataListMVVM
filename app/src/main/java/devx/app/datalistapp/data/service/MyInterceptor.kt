@@ -1,45 +1,25 @@
 package devx.app.datalistapp.data.service
+
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
+import devx.app.datalistapp.base.InternetUtil
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 
 open class MyInterceptor constructor(
-        private val context: Context
+    private val context: Context
 ) : Interceptor {
 
-    val tag="MyInterceptor::"
+    val tag = "MyInterceptor::"
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        return if (!isConnectionOn()) {
-            Log.i(tag,"noconnect")
+        return if (!InternetUtil.isConnectionOn(context)) {
+            Log.i(tag, "noconnect")
             throw NoConnectivityException()
         } else {
-            Log.i(tag,"making api call")
+            Log.i(tag, "making api call")
             chain.proceed(chain.request())
-        }
-    }
-
-    private fun isConnectionOn(): Boolean {
-        val connectivityManager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork
-            val connection = connectivityManager.getNetworkCapabilities(network)
-            return connection != null && (
-                    connection.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                            connection.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
-        } else {
-            val activeNetwork = connectivityManager.activeNetworkInfo
-            if (activeNetwork != null) {
-                return (activeNetwork.type == ConnectivityManager.TYPE_WIFI ||
-                        activeNetwork.type == ConnectivityManager.TYPE_MOBILE)
-            }
-            return false
         }
     }
 
